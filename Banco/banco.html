@@ -1,0 +1,112 @@
+<script>
+    class Banco {
+        constructor(nome, juros){
+            this.nome = nome;
+            this.juros = juros;
+        };
+    };
+
+    class Conta {
+        constructor(banco, saldo, limite, emprestimo){
+            this.banco = banco;
+            this.saldo = saldo;
+            this.limite = limite;
+            this.emprestimo = emprestimo;
+        };
+        
+        fazerEmprestimo(valor){
+            if (this.limite > valor) {
+            this.limite = this.limite - valor;
+            this.emprestimo = this.emprestimo + valor;
+            console.log("Empréstimo realizado com sucesso!");
+            } else {
+                console.log("Limite insuficiente!");
+            };
+        };
+
+        fazerDeposito(valor){
+            this.saldo = this.saldo + valor;
+        };
+
+        fazerSaque(valor) {
+            if (this.saldo >= valor){
+                this.saldo = this.saldo - valor;
+            } else {
+                console.log("Saldo Insuficiente!");
+            };
+        };
+
+        imprimirExtrato() {
+            console.log("Extrato Banco: ", this.banco.nome);
+            console.log("Saldo: ", this.saldo);
+            console.log("Limite: ", this.limite);
+            console.log("Empréstimo Realizado: ", this.emprestimo);
+        };
+    };
+
+    class Cliente {
+        constructor(cliente) {
+            this.cliente = cliente;
+            this.contas = [];
+        };
+
+        adicionarConta(conta){
+            this.contas.push(conta);
+        };
+
+        fazerDeposito(banco, valor){
+            for (let conta of this.contas) {
+                if (conta.banco == banco){
+                    conta.fazerDeposito(valor);
+                    console.log("Depósito realizado com sucesso!");
+                };
+            };
+        };
+
+        fazerSaque(banco, valor){
+            for (let conta of this.contas) {
+                if (conta.banco == banco) {
+                    conta.fazerSaque(valor);
+                    console.log("Saque realizado com sucesso");
+                };
+            };
+        };
+
+        imprimirExtrato(banco){
+            for (let conta of this.contas){
+                if (conta.banco == banco) {
+                    conta.imprimirExtrato(); 
+                };
+            };
+        };
+
+        fazerEmprestimo(banco, valor){
+            for (let conta of this.contas){
+                if (conta.banco == banco) {
+                    conta.fazerEmprestimo(valor);
+                };
+            };        
+        };    
+    };
+
+
+
+    var banco1 = new Banco ("Nu Bank", 0.15);
+    var banco2 = new Banco ("Banco do Brasil", 0.1);
+    
+    var cliente = new Cliente ("Ana Clara dos Santos");
+    cliente.adicionarConta(new Conta(banco1, 0 , 1000, 0));
+    cliente.fazerDeposito(banco1, 1000);
+    cliente.fazerSaque(banco1, 1500);
+    cliente.fazerEmprestimo(banco1, 500);
+    cliente.imprimirExtrato(banco1);
+
+    cliente.adicionarConta(new Conta(banco2, 0, 1000, 0));
+    cliente.fazerDeposito(banco2, 2000);
+    cliente.fazerSaque(banco2, 1500);
+    cliente.fazerEmprestimo(banco2, 1500);
+    cliente.imprimirExtrato(banco2);
+    
+    
+    console.log(cliente);
+</script>    
